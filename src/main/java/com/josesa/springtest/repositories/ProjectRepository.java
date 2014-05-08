@@ -53,7 +53,7 @@ public interface ProjectRepository extends  JpaRepository<Project, Integer>,
 	 * @param name
 	 * @return
 	 */
-	@Query("from Project p join fetch p.owner o where o.name = ?1")
+	@Query("from Project p join fetch p.owner o left join fetch p.participants p where o.name = ?1")
 	List<Project> findByOwnerName2(String name);
 	
 	
@@ -73,6 +73,7 @@ public interface ProjectRepository extends  JpaRepository<Project, Integer>,
 				public Predicate toPredicate(Root<Project> root,
 						CriteriaQuery<?> query, CriteriaBuilder builder) {
 					Join<Project, Person> people = (Join<Project, Person>)root.fetch(Project_.owner, JoinType.LEFT);
+					root.fetch(Project_.participants, JoinType.LEFT);
 					return people.get(Person_.name).in((Object[])names);
 				}
 			};
@@ -82,6 +83,7 @@ public interface ProjectRepository extends  JpaRepository<Project, Integer>,
 				public Predicate toPredicate(Root<Project> root,
 						CriteriaQuery<?> query, CriteriaBuilder builder) {
 					Join<Project, Person> people = (Join<Project, Person>)root.fetch(Project_.owner, JoinType.LEFT);
+					root.fetch(Project_.participants, JoinType.LEFT);
 					return people.get(Person_.id).in((Object[])ids);
 				}
 			};

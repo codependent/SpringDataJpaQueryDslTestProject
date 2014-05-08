@@ -30,6 +30,8 @@ public class QProject extends EntityPathBase<Project> {
 
     public final QPerson owner;
 
+    public final SetPath<Person, QPerson> participants = this.<Person, QPerson>createSet("participants", Person.class, QPerson.class, PathInits.DIRECT2);
+
     public QProject(String variable) {
         this(Project.class, forVariable(variable), INITS);
     }

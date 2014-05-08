@@ -63,7 +63,11 @@ public class ProjectController {
 			@PathVariable Integer size, 
 			@PathVariable ProjectSortType type,
 			HttpServletResponse response){
+		//XXX Aquí no podemos hacer fetch luego hay que quitar los lazy
 		Page<Project> mayhem = businessService.findProjectsByOwnerIdPaginated(ownerId, page, size, type.getType());
+		for (Project project : mayhem) {
+			project.setParticipants(null);
+		}
 		response.setContentType("application/json");
 		return mayhem;
 	}

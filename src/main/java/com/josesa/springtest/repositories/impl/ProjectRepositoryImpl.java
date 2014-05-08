@@ -19,7 +19,9 @@ public class ProjectRepositoryImpl extends QueryDslRepositorySupport implements 
 	public List<Project> findProjectsByOwnerNamesAndIdsQ2(String[] names, Integer[] ids) {
 		QProject project = QProject.project;
 		QPerson owner = new QPerson("owner");
-		List<Project> projects = from(project).leftJoin(project.owner, owner).fetch()
+		List<Project> projects = from(project)
+									.leftJoin(project.owner, owner).fetch()
+									.leftJoin(project.participants).fetch()
 		.where(owner.name.eq(names[0]).and(owner.id.eq(ids[0]))).list(project);
 		return projects;
 	}

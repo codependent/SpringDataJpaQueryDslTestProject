@@ -1,12 +1,16 @@
 package com.josesa.springtest.entity;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -24,6 +28,10 @@ public class Project {
 	
 	@ManyToOne
 	private Person owner;
+	
+	@OneToMany(fetch=FetchType.LAZY)
+	@JoinColumn
+    private Set<Person> participants;
 	
 	public String getName() {
 		return name;
@@ -55,5 +63,13 @@ public class Project {
 	
 	public void setOwner(Person owner) {
 		this.owner = owner;
+	}
+	
+	public Set<Person> getParticipants() {
+		return participants;
+	}
+	
+	public void setParticipants(Set<Person> participants) {
+		this.participants = participants;
 	}
 }
